@@ -1,15 +1,7 @@
 use bevy::prelude::*;
 use crate::game::prelude::*;
 
-pub struct SpawnPlugin;
-
-impl Plugin for SpawnPlugin {
-    fn build(&self, app: &mut App) {
-        app.add_systems(Startup, setup_start_ui);
-    }
-}
-
-pub fn spawn_level(
+pub fn spawn_breakout_ui(
     mut commands: Commands,
     mut meshes: ResMut<Assets<Mesh>>,
     mut materials: ResMut<Assets<ColorMaterial>>,
@@ -123,32 +115,4 @@ pub fn spawn_level(
         }
     }
 
-}
-
-fn setup_start_ui(
-    mut commands: Commands,
-    meshes: ResMut<Assets<Mesh>>,
-    materials: ResMut<Assets<ColorMaterial>>,
-    asset_server: Res<AssetServer>,
-) {
-    // Camera
-    // commands.spawn(Camera2d);
-
-    // Simple start screen as a large sprite; text rendering setup may vary across projects,
-    // so we keep the start screen visual minimal here.
-    // semi-transparent full-screen overlay for start menu
-    commands.spawn((
-        Sprite::from_color(Color::srgba(0.0, 0.0, 0.0, 0.5), Vec2::new(RIGHT_WALL - LEFT_WALL + 200.0, TOP_WALL - BOTTOM_WALL + 200.0)),
-        Transform::from_translation(Vec3::new(0.0, 0.0, 200.0)),
-        StartUi,
-    ));
-
-    // Preload collision sound resource so it's available when level spawns
-    let ball_collision_sound = asset_server.load("sounds/breakout_collision.ogg");
-    commands.insert_resource(CollisionSound::new(ball_collision_sound));
-
-    // Spawn the level in the background while showing the StartUi overlay.
-    // Systems that update movement/collisions check `GameState` and won't run
-    // until the player starts the game, so the scene will be static behind the overlay.
-    spawn_level(commands, meshes, materials, asset_server);
 }

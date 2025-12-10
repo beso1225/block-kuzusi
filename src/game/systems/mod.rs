@@ -1,3 +1,2 @@
-pub mod collisions;
-pub mod paddle;
-pub mod movement;
+pub mod physics;
+pub mod ui;

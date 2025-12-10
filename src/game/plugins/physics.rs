@@ -1,7 +1,7 @@
 use bevy::{prelude::*, math::bounding::{Aabb2d, BoundingCircle}};
 
-use crate::game::prelude::*;
-use crate::game::systems::{collisions, paddle, movement};
+use crate::game::{prelude::*, systems::ui::gameover_ui};
+use crate::game::systems::physics::{collisions, paddle, movement};
 
 
 pub struct PhysicsPlugin;
@@ -21,7 +21,7 @@ fn check_for_collisions(
     mut score: ResMut<Score>,
     ball_query: Single<(&mut Velocity, &Transform), With<Ball>>,
     collider_query: Query<(Entity, &Transform, Option<&Brick>), With<Collider>>,
-    mut state: ResMut<GameState>,
+    state: ResMut<GameState>,
     bottom_wall_query: Query<(), With<BottomWall>>,
     all_query: Query<Entity, Or<(With<Paddle>, With<Ball>, With<Brick>, With<Collider>, With<Wall>, With<ScoreboardUi>)>>,
     meshes: ResMut<Assets<Mesh>>,
@@ -60,21 +60,15 @@ fn check_for_collisions(
     }
 
     if game_over {
-        // despawn game entities
-        for e in &all_query {
-            commands.entity(e).despawn();
-        }
-        // reset score and set menu state
-        **score = 0;
-        *state = GameState::Menu;
-        // spawn Start UI overlay
-        commands.spawn((
-            Sprite::from_color(Color::srgba(0.0, 0.0, 0.0, 0.5), Vec2::new(RIGHT_WALL - LEFT_WALL + 200.0, TOP_WALL - BOTTOM_WALL + 200.0)),
-            Transform::from_translation(Vec3::new(0.0, 0.0, 200.0)),
-            StartUi,
-        ));
-        // respawn level in background for menu
-        spawn_level(commands, meshes, materials, asset_server);
+        gameover_ui::game_over(
+            commands,
+            score,
+            state,
+            all_query,
+            meshes,
+            materials,
+            asset_server,
+        );
     }
 
 }

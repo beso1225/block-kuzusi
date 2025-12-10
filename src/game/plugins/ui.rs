@@ -1,9 +1,9 @@
 use bevy::prelude::*;
 use crate::game::prelude::*;
 
-pub struct UiPlugin;
+pub struct ScoreboardPlugin;
 
-impl Plugin for UiPlugin {
+impl Plugin for ScoreboardPlugin {
     fn build(&self, app: &mut App) {
         app.add_systems(Update, update_scoreboard);
     }

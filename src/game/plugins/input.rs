@@ -1,5 +1,5 @@
 use bevy::prelude::*;
-use crate::game::prelude::*;
+use crate::game::{prelude::*, systems::ui::start_ui};
 
 pub struct InputPlugin;
 
@@ -47,13 +47,9 @@ fn input_return_to_menu(
         // insert menu state
         *state = GameState::Menu;
         // spawn Start UI overlay
-        commands.spawn((
-            Sprite::from_color(Color::srgba(0.0, 0.0, 0.0, 0.5), Vec2::new(RIGHT_WALL - LEFT_WALL + 200.0, TOP_WALL - BOTTOM_WALL + 200.0)),
-            Transform::from_translation(Vec3::new(0.0, 0.0, 200.0)),
-            StartUi,
-        ));
+        start_ui::spawn_start_ui(&mut commands);
         // respawn level in background (systems disabled because state=Menu)
-        spawn_level(commands, meshes, materials, asset_server);
+        spawn_breakout_ui(commands, meshes, materials, asset_server);
         info!("Returned to menu and reset game");
     }
 }
