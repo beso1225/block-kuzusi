@@ -137,11 +137,11 @@ fn setup_start_ui(
     // Simple start screen as a large sprite; text rendering setup may vary across projects,
     // so we keep the start screen visual minimal here.
     // semi-transparent full-screen overlay for start menu
-        commands.spawn((
-            Sprite::from_color(Color::srgba(0.0, 0.0, 0.0, 0.5), Vec2::new(RIGHT_WALL - LEFT_WALL + 200.0, TOP_WALL - BOTTOM_WALL + 200.0)),
-            Transform::from_translation(Vec3::new(0.0, 0.0, 200.0)),
-            StartUi,
-        ));
+    commands.spawn((
+        Sprite::from_color(Color::srgba(0.0, 0.0, 0.0, 0.5), Vec2::new(RIGHT_WALL - LEFT_WALL + 200.0, TOP_WALL - BOTTOM_WALL + 200.0)),
+        Transform::from_translation(Vec3::new(0.0, 0.0, 200.0)),
+        StartUi,
+    ));
 
     // Preload collision sound resource so it's available when level spawns
     let ball_collision_sound = asset_server.load("sounds/breakout_collision.ogg");

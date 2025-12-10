@@ -2,6 +2,7 @@ pub mod prelude;
 
 mod core;
 mod plugins;
+mod systems;
 
 pub use prelude::*;
 pub struct GamePlugin;
