@@ -4,7 +4,7 @@ mod core;
 mod plugins;
 mod systems;
 
-pub use prelude::*;
+pub(crate) use prelude::*;
 pub struct GamePlugin;
 impl Plugin for GamePlugin {
     fn build(&self, app: &mut App) {

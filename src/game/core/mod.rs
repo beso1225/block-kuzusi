@@ -1,4 +1,4 @@
-pub mod components;
-pub mod constants;
-pub mod resources;
-pub mod events;
+pub(crate) mod components;
+pub(crate) mod constants;
+pub(crate) mod resources;
+pub(crate) mod events;

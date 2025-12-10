@@ -1,7 +1,7 @@
-pub mod core;
-pub mod start;
-pub mod input;
-pub mod physics;
-pub mod ui;
-pub mod audio;
-pub mod resource;
+pub(crate) mod core;
+pub(crate) mod start;
+pub(crate) mod input;
+pub(crate) mod physics;
+pub(crate) mod ui;
+pub(crate) mod audio;
+pub(crate) mod resource;
