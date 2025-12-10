@@ -1,6 +1,5 @@
 use bevy::prelude::*;
 use crate::game::prelude::*;
-use crate::game::plugins::spawn;
 
 pub struct InputPlugin;
 
@@ -54,7 +53,7 @@ fn input_return_to_menu(
             StartUi,
         ));
         // respawn level in background (systems disabled because state=Menu)
-        spawn::spawn_level(commands, meshes, materials, asset_server);
+        spawn_level(commands, meshes, materials, asset_server);
         info!("Returned to menu and reset game");
     }
 }
