@@ -1,6 +1,6 @@
-pub(crate) use crate::game::constants::*;
-pub use crate::game::components::*;
-pub use crate::game::resources::*;
-pub use crate::game::events::*;
+pub(crate) use crate::game::core::components::*;
+pub(crate) use crate::game::core::constants::*;
+pub(crate) use crate::game::core::resources::*;
+pub(crate) use crate::game::core::events::*;
 
 pub use crate::game::plugins::spawn::spawn_level;

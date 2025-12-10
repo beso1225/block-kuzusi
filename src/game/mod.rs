@@ -1,10 +1,6 @@
 pub mod prelude;
 
-mod constants;
-mod components;
-mod resources;
-mod events;
-
+mod core;
 mod plugins;
 
 pub use prelude::*;
