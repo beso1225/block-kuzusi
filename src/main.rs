@@ -1,41 +1,12 @@
 use bevy::{math::bounding::{Aabb2d, BoundingCircle, IntersectsVolume}, prelude::*};
 
-const PADDLE_SIZE: Vec2 = Vec2::new(120.0, 20.0);
-const PADDLE_SPEED: f32 = 500.0;
-const PADDLE_PADDING: f32 = 10.0;
-
-const BALL_STARTING_POSITION: Vec3 = Vec3::new(0.0, -50.0, 1.0);
-const BALL_DIAMETER: f32 = 30.0;
-const BALL_SPEED: f32 = 400.0;
-const INITIAL_BALL_DIRECTION: Vec2 = Vec2::new(0.5, -0.5);
-
-const WALL_THICKNESS: f32 = 10.0;
-const LEFT_WALL: f32 = -450.0;
-const RIGHT_WALL: f32 = 450.0;
-const BOTTOM_WALL: f32 = -300.0;
-const TOP_WALL: f32 = 300.0;
-
-const BRICK_SIZE: Vec2 = Vec2::new(100.0, 30.0);
-const GAP_BETWEEN_BRICKS: f32 = 5.0;
-const GAP_BETWEEN_PADDLE_AND_FLOOR: f32 = 60.0;
-const GAP_BETWEEN_PADDLE_AND_BRICKS: f32 = 270.0;
-const GAP_BETWEEN_BRICKS_AND_SIDES: f32 = 20.0;
-const GAP_BETWEEN_BRICKS_AND_CEILING: f32 = 20.0;
-
-const SCOREBOARD_FONT_SIZE: f32 = 33.0;
-const SCOREBOARD_TEXT_PADDING: Val = Val::Px(5.0);
-
-const PADDLE_COLOR: Color = Color::srgb(0.3, 0.3, 0.7);
-const BALL_COLOR: Color = Color::srgb(0.1, 0.5, 0.5);
-const BRICK_COLOR: Color = Color::srgb(0.5, 0.5, 1.0);
-const WALL_COLOR: Color = Color::srgb(0.8, 0.8, 0.8);
-const TEXT_COLOR: Color = Color::srgb(0.5, 0.5, 1.0);
-const SCORE_COLOR: Color = Color::srgb(1.0, 0.5, 0.5);
+mod game;
+use game::prelude::*;
 
 fn main() {
     App::new()
         .add_plugins(DefaultPlugins)
-        .insert_resource(Score(0))
+        .insert_resource(Score::new(0))
         .insert_resource(GameState::Menu)
         .add_systems(Startup, setup_start_ui)
         .add_systems(
@@ -52,43 +23,6 @@ fn main() {
         .add_observer(play_collition_sound)
         .run();
 }
-
-#[derive(Resource, Clone, Copy, PartialEq, Eq, Debug)]
-enum GameState {
-    Menu,
-    Playing,
-}
-
-#[derive(Component)]
-struct StartUi;
-
-#[derive(Component)]
-struct Paddle;
-
-#[derive(Component)]
-struct Ball;
-
-#[derive(Component, Deref, DerefMut)]
-struct Velocity(Vec2);
-
-#[derive(Event)]
-struct BallCollided;
-
-#[derive(Component)]
-struct Brick;
-
-#[derive(Component)]
-struct BottomWall;
-
-#[derive(Component, Default)]
-struct Collider;
-
-#[derive(Resource, Deref)]
-struct CollisionSound(Handle<AudioSource>);
-
-#[derive(Component)]
-#[require(Sprite, Transform, Collider)]
-struct Wall;
 
 enum WallLocation {
     Left,
@@ -144,14 +78,6 @@ impl Wall {
     }
 }
 
-
-
-#[derive(Resource, Deref, DerefMut)]
-struct Score(usize);
-
-#[derive(Component)]
-struct ScoreboardUi;
-
 fn spawn_level(
     mut commands: Commands,
     mut meshes: ResMut<Assets<Mesh>>,
@@ -163,7 +89,7 @@ fn spawn_level(
 
     // Sound
     let ball_collision_sound = asset_server.load("sounds/breakout_collision.ogg");
-    commands.insert_resource(CollisionSound(ball_collision_sound));
+    commands.insert_resource(CollisionSound::new(ball_collision_sound));
 
     // Paddle
     let paddle_y = BOTTOM_WALL + GAP_BETWEEN_PADDLE_AND_FLOOR;
@@ -186,7 +112,7 @@ fn spawn_level(
         Transform::from_translation(BALL_STARTING_POSITION)
             .with_scale(Vec2::splat(BALL_DIAMETER).extend(1.0)),
         Ball,
-        Velocity(INITIAL_BALL_DIRECTION.normalize() * BALL_SPEED),
+        Velocity::new(INITIAL_BALL_DIRECTION.normalize() * BALL_SPEED),
     ));
 
     // Scoreboard
@@ -288,7 +214,7 @@ fn setup_start_ui(
 
     // Preload collision sound resource so it's available when level spawns
     let ball_collision_sound = asset_server.load("sounds/breakout_collision.ogg");
-    commands.insert_resource(CollisionSound(ball_collision_sound));
+    commands.insert_resource(CollisionSound::new(ball_collision_sound));
 
     // Spawn the level in the background while showing the StartUi overlay.
     // Systems that update movement/collisions check `GameState` and won't run
@@ -329,7 +255,7 @@ fn input_return_to_menu(
             commands.entity(e).despawn();
         }
         // reset score
-        score.0 = 0;
+        score.set_zero();
         // insert menu state
         *state = GameState::Menu;
         // spawn Start UI overlay
