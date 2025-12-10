@@ -2,10 +2,12 @@ use bevy::{math::bounding::{Aabb2d, BoundingCircle, IntersectsVolume}, prelude::
 
 mod game;
 use game::prelude::*;
+use game::plugins::core::CorePlugin;
 
 fn main() {
     App::new()
         .add_plugins(DefaultPlugins)
+        .add_plugins(CorePlugin)
         .insert_resource(Score::new(0))
         .insert_resource(GameState::Menu)
         .add_systems(Startup, setup_start_ui)
@@ -201,7 +203,7 @@ fn setup_start_ui(
     asset_server: Res<AssetServer>,
 ) {
     // Camera
-    commands.spawn(Camera2d);
+    // commands.spawn(Camera2d);
 
     // Simple start screen as a large sprite; text rendering setup may vary across projects,
     // so we keep the start screen visual minimal here.

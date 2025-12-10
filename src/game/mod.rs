@@ -4,3 +4,5 @@ mod constants;
 mod components;
 mod resources;
 mod events;
+
+pub mod plugins;
