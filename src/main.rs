@@ -7,7 +7,9 @@ use game::plugins::{
     spawn::SpawnPlugin,
     input::InputPlugin,
     physics::PhysicsPlugin,
-    ui::UiPlugin};
+    ui::UiPlugin,
+    audio::AudioPlugin,
+};
 
 fn main() {
     App::new()
@@ -17,16 +19,8 @@ fn main() {
         .add_plugins(InputPlugin)
         .add_plugins(PhysicsPlugin)
         .add_plugins(UiPlugin)
+        .add_plugins(AudioPlugin)
         .insert_resource(Score::new(0))
         .insert_resource(GameState::Menu)
-        .add_observer(play_collition_sound)
         .run();
-}
-
-fn play_collition_sound(
-    _collided: On<BallCollided>,
-    mut commands: Commands,
-    sound: Res<CollisionSound>
-) {
-    commands.spawn((AudioPlayer(sound.clone()),PlaybackSettings::DESPAWN));
 }
