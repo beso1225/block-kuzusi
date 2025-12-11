@@ -36,6 +36,7 @@ pub fn spawn_breakout_ui(
             .with_scale(Vec2::splat(BALL_DIAMETER).extend(1.0)),
         Ball,
         Velocity::new(INITIAL_BALL_DIRECTION.normalize() * BALL_SPEED),
+        PaddleCooldown(0.0),
     ));
 
     // Scoreboard

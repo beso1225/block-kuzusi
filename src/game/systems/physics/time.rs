@@ -8,3 +8,10 @@ pub fn apply_velocity(mut query: Query<(&mut Transform, &Velocity)>, time: Res<T
         transform.translation.y += velocity.y * time.delta_secs();
     }
 }
+
+pub fn tick_paddle_cooldowns(time: Res<Time>, mut query: Query<&mut PaddleCooldown, With<Ball>>) {
+    let dt = time.delta_secs();
+    for mut cooldown in &mut query {
+        cooldown.0 = (cooldown.0 - dt).max(0.0);
+    }
+}
