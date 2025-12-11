@@ -22,6 +22,8 @@ pub(crate) const GAP_BETWEEN_PADDLE_AND_BRICKS: f32 = 270.0;
 pub(crate) const GAP_BETWEEN_BRICKS_AND_SIDES: f32 = 20.0;
 pub(crate) const GAP_BETWEEN_BRICKS_AND_CEILING: f32 = 20.0;
 
+pub(crate) const CORNER_THRESHOLD: f32 = 5.0;
+
 pub(crate) const SCOREBOARD_FONT_SIZE: f32 = 33.0;
 pub(crate) const SCOREBOARD_TEXT_PADDING: Val = Val::Px(5.0);
 
