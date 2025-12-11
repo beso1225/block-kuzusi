@@ -20,7 +20,7 @@ fn check_for_collisions(
     mut commands: Commands,
     mut score: ResMut<Score>,
     ball_query: Single<(&mut Velocity, &Transform), With<Ball>>,
-    collider_query: Query<(Entity, &Transform, Option<&Brick>), With<Collider>>,
+    collider_query: Query<(Entity, &Transform, Option<&Brick>, Option<&Paddle>), With<Collider>>,
     state: ResMut<GameState>,
     bottom_wall_query: Query<(), With<BottomWall>>,
     all_query: Query<Entity, Or<(With<Paddle>, With<Ball>, With<Brick>, With<Collider>, With<Wall>, With<ScoreboardUi>)>>,
@@ -33,13 +33,14 @@ fn check_for_collisions(
 
     let mut game_over = false;
 
-    for (collider_entity, collider_transform, maybe_brick) in &collider_query {
+    for (collider_entity, collider_transform, maybe_brick, maybe_paddle) in &collider_query {
         let collision = collisions::ball_collision(
             BoundingCircle::new(ball_transform.translation.truncate(), BALL_DIAMETER / 2.0),
             Aabb2d::new(
                 collider_transform.translation.truncate(),
-                collider_transform.scale.truncate(),
-            )
+                collider_transform.scale.truncate() / 2.0
+            ),
+            maybe_paddle.is_some()
         );
         if let Some(collision) = collision {
             commands.trigger(BallCollided);
@@ -55,7 +56,7 @@ fn check_for_collisions(
                 }
             }
 
-            collisions::ball_reflection(&mut ball_velocity, collision);
+            collisions::ball_reflection(&mut ball_velocity, collision, maybe_paddle.is_some());
         }
     }
 
