@@ -29,9 +29,12 @@ pub(crate) const PADDLE_HIT_COOLDOWN: f32 = 0.5;
 pub(crate) const SCOREBOARD_FONT_SIZE: f32 = 33.0;
 pub(crate) const SCOREBOARD_TEXT_PADDING: Val = Val::Px(5.0);
 
+pub(crate) const START_UI_TITLE_FONT_SIZE: f32 = 100.0;
+
 pub(crate) const PADDLE_COLOR: Color = Color::srgb(0.3, 0.3, 0.7);
 pub(crate) const BALL_COLOR: Color = Color::srgb(0.1, 0.5, 0.5);
 pub(crate) const BRICK_COLOR: Color = Color::srgb(0.5, 0.5, 1.0);
 pub(crate) const WALL_COLOR: Color = Color::srgb(0.8, 0.8, 0.8);
 pub(crate) const TEXT_COLOR: Color = Color::srgb(0.5, 0.5, 1.0);
+pub(crate) const TITLE_TEXT_COLOR: Color = Color::srgb(1.0, 1.0, 0.5);
 pub(crate) const SCORE_COLOR: Color = Color::srgb(1.0, 0.5, 0.5);
