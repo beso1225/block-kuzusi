@@ -8,6 +8,9 @@ pub struct StartUi;
 pub struct Paddle;
 
 #[derive(Component)]
+pub struct PaddleCooldown(pub f32);
+
+#[derive(Component)]
 pub struct Ball;
 
 #[derive(Component, Deref, DerefMut)]
